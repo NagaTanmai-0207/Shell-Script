@@ -1,0 +1,73 @@
+#!/bin/bash
+
+board=("" "" "" "" "" "" "" "" "")
+
+print_board() {
+  echo " ${board[0]:- } | ${board[1]:- } | ${board[2]:- } "
+  echo "---+---+---"
+  echo " ${board[3]:- } | ${board[4]:- } | ${board[5]:- } "
+  echo "---+---+---"
+  echo " ${board[6]:- } | ${board[7]:- } | ${board[8]:- } "
+}
+
+check_winner() {
+  wins=(
+    "0 1 2" "3 4 5" "6 7 8"
+    "0 3 6" "1 4 7" "2 5 8"
+    "0 4 8" "2 4 6"
+  )
+
+  for combo in "${wins[@]}"; do
+    set -- $combo
+    if [[ -n "${board[$1]}" && \
+          "${board[$1]}" == "${board[$2]}" && \
+          "${board[$2]}" == "${board[$3]}" ]]; then
+      print_board
+      echo "Player ${board[$1]} wins! 🎉"
+      exit 0
+    fi
+  done
+}
+
+check_draw() {
+  for cell in "${board[@]}"; do
+    if [[ -z "$cell" ]]; then
+      return
+    fi
+  done
+  print_board
+  echo "It's a draw!"
+  exit 0
+}
+
+player="X"
+
+while true; do
+  print_board
+  echo "Player $player turn"
+
+  read -p "Enter position (1-9): " pos
+
+  if ! [[ "$pos" =~ ^[1-9]$ ]]; then
+    echo "Invalid input! Enter 1-9 only."
+    continue
+  fi
+
+  index=$((pos-1))
+
+  if [[ -n "${board[$index]}" ]]; then
+    echo "Position already taken! Try again."
+    continue
+  fi
+
+  board[$index]=$player
+
+  check_winner
+  check_draw
+
+  if [[ $player == "X" ]]; then
+    player="O"
+  else
+    player="X"
+  fi
+done
