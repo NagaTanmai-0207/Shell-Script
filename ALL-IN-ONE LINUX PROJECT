@@ -1,0 +1,182 @@
+# project setup
+
+tanmai_arni@DELL:~$ mkdir project
+tanmai_arni@DELL:~$ cd project
+tanmai_arni@DELL:~/project$ pwd
+/home/tanmai_arni/project
+tanmai_arni@DELL:~/project$ mkdir input
+tanmai_arni@DELL:~/project$ mkdir logs
+tanmai_arni@DELL:~/project$ mkdir backup
+tanmai_arni@DELL:~/project$ mkdir output
+tanmai_arni@DELL:~/project$ ls
+backup  input  logs  output
+
+# sample data 
+tanmai_arni@DELL:~/project$ cd input
+tanmai_arni@DELL:~/project/input$ pwd
+/home/tanmai_arni/project/input
+tanmai_arni@DELL:~/project/input$ nano text.txt
+tanmai_arni@DELL:~/project/input$ cat text.txt
+System Maintenance Report
+Server Name: prod-server-01
+Today tasks:
+- Checked disk usage
+- Verified backup status
+- Cleaned temporary files
+Notes:
+System running stable
+No major issues detected
+Admin: Tanmai
+
+tanmai_arni@DELL:~/project/input$ nano a.txt
+tanmai_arni@DELL:~/project/input$ cat a.text
+Project Notes
+-------------
+Task: File organization
+Status: Completed
+Details:
+- Files are categorized by type
+- Logs are stored separately
+- Backup process pending
+
+tanmai_arni@DELL:~/project/input$ nano b.txt
+tanmai_arni@DELL:~/project/input$ cat b.txt
+Daily Work Summary
+-------------------
+Checked system performance
+Cleaned unused files
+Verified user access
+Remarks:
+System stable
+No critical issues
+End of report
+
+tanmai_arni@DELL:~/project/input$ nano system.log
+tanmai_arni@DELL:~/project/input$ cat system.log
+INFO: System boot completed
+INFO: User login successful
+WARNING: Low memory detected
+ERROR: Disk read failure
+INFO: Backup started
+ERROR: Backup failed due to permission denied
+WARNING: High CPU usage detected
+INFO: Service restarted successfully
+ERROR: Network timeout occurred
+INFO: System running normally
+
+tanmai_arni@DELL:~/project/input$ nano x.log
+tanmai_arni@DELL:~/project/input$ cat x.log
+INFO: Application started
+WARNING: Memory usage high
+ERROR: Unable to connect to database
+INFO: Retrying connection
+ERROR: Connection timeout
+INFO: Process completed
+
+tanmai_arni@DELL:~/project/input$ nano y.log
+tanmai_arni@DELL:~/project/input$ cat y.log
+INFO: Backup initiated
+INFO: Backup in progress
+WARNING: Disk space low
+ERROR: Backup failed
+INFO: Cleanup started
+ERROR: File permission denied
+INFO: Operation finished
+
+tanmai_arni@DELL:~/project/input$ ls
+system.log  text.txt a.txt  b.txt  x.log  y.log
+
+# File organizer - manual
+tanmai_arni@DELL:~/project/input$ mv system.log /home/tanmai_arni/project/logs
+tanmai_arni@DELL:~/project/input$ cd ..
+tanmai_arni@DELL:~/project$ ls logs
+system.log
+tanmai_arni@DELL:~/project$ mkdir text
+tanmai_arni@DELL:~/project$ ls
+backup  input  logs  output  text
+tanmai_arni@DELL:~/project$ cd input
+tanmai_arni@DELL:~/project/input$ mv text.txt /home/tanmai_arni/project/text
+tanmai_arni@DELL:~/project/input$ cd ..
+tanmai_arni@DELL:~/project$ ls text
+text.txt
+
+# automation
+tanmai_arni@DELL:~/project/input$ cd ..
+tanmai_arni@DELL:~/project$ find input -name "*.txt" -exec mv {} text/ \;
+tanmai_arni@DELL:~/project$ ls text
+a.txt  b.txt  text.txt
+tanmai_arni@DELL:~/project$ find input -name "*.log" -exec mv {} logs/ \;
+tanmai_arni@DELL:~/project$ ls logs
+system.log  x.log  y.log
+
+# Log analyzer
+# IN SINGLE FILE
+tanmai_arni@DELL:~/project$ cd logs
+tanmai_arni@DELL:~/project/logs$ grep "ERROR" system.log
+ERROR: Disk read failure
+ERROR: Backup failed due to permission denied
+ERROR: Network timeout occurred
+tanmai_arni@DELL:~/project/logs$ grep "ERROR" system.log | wc -l
+3
+tanmai_arni@DELL:~/project/logs$  ERROR=$(grep "ERROR" system.log | wc -l)
+echo "Total ERROR: $ERROR"
+Total ERROR: 3
+# IN ALL ".log" files
+ERROR=$(grep "ERROR" *.log | wc -l)
+echo "Total ERROR: $ERROR"
+WARNING=$(grep "WARNING" *.log | wc -l)
+echo "Total WARNING: $WARNING"
+
+Total ERROR: 7
+Total WARNING: 4
+
+# system info collect
+tanmai_arni@DELL:~/project$ whoami
+tanmai_arni
+tanmai_arni@DELL:~/project$ date
+Sun Feb 15 20:12:58 UTC 2026
+tanmai_arni@DELL:~/project$ df -h
+tanmai_arni@DELL:~/project$ free -h
+
+tanmai_arni@DELL:~/project$ tar -czvf backup/input_$(date +"%Y-%m-%d_%H-%M").tar.gz input/
+input/
+tanmai_arni@DELL:~/project$ ls backup
+input_2026-02-15_20-36.tar.gz
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
